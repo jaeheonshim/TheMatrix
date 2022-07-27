@@ -2,8 +2,20 @@
 #include "Matrix.h"
 
 #include <vector>
+#include <random>
 
 namespace Algorithms {
+    static std::mt19937 mt{ std::random_device{}() };
+    static std::uniform_int_distribution<> range100{ 1, 100 };
+
+    void random_int32(Matrix& mat) {
+        for(int i{ 0 }; i < mat.rows; ++i) {
+            for(int j{ 0 }; j < mat.cols; ++j) {
+                mat[i][j] = range100(mt);
+            }
+        }
+    }
+
     void ref(Matrix& mat) {
         int row{ 0 };
         int col{};
@@ -67,7 +79,6 @@ namespace Algorithms {
 
         // starting with rightmost
         for(std::vector<int>::const_reverse_iterator iter{ pivotColumns.rbegin() }; iter != pivotColumns.rend(); ++iter) {
-            std::cout << "processing row " << row << '\n';
             int col{ *iter };
             // clear upper rows
             for(int i{ row - 1 }; i >= 0; --i) {
